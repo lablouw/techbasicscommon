@@ -30,7 +30,7 @@ public class UncaughtRestExceptionHandlerAspect {
             return pjp.proceed();
         } catch (Throwable e) {
             String ticketError = Long.toHexString(System.currentTimeMillis());
-            log.error("Uncaught Exception. Ticket error code returned to caller [ticketError={}]", ticketError, e);
+            log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
             return new ResponseEntity<String>("TicketError " + ticketError, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

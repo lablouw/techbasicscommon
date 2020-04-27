@@ -15,7 +15,7 @@ public class UncaughtSoapExceptionHandlerAspect {
     private void endpoint() {
     }
 
-    @Pointcut("@within( techbasics.common.annotaiton.UncaughtExceptionHandler)")
+    @Pointcut("@within(techbasics.common.annotaiton.UncaughtExceptionHandler)")
     private void uncaughtExceptionHandler() {
     }
 
@@ -29,7 +29,7 @@ public class UncaughtSoapExceptionHandlerAspect {
             return pjp.proceed();
         } catch (Throwable e) {
             String ticketError = Long.toHexString(System.currentTimeMillis());
-            log.error("Uncaught Exception. Ticket error code returned to caller [ticketError={}]", ticketError, e);
+            log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
             throw new InternalServerError(ticketError);
         }
     }
