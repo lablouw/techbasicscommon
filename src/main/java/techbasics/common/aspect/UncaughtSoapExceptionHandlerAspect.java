@@ -23,7 +23,7 @@ public class UncaughtSoapExceptionHandlerAspect {
     private void allPublicMethods() {
     }
 
-    @Around("uncaughtExceptionHandler() && restController() && allPublicMethods()")
+    @Around("uncaughtExceptionHandler() && allPublicMethods()")
     public Object processUncaughtSoapException(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();
