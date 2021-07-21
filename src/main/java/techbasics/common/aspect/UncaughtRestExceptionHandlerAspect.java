@@ -51,7 +51,7 @@ public class UncaughtRestExceptionHandlerAspect {
         } catch (Throwable e) {
             if (generateTicketErrors) {
                 String ticketError = Long.toHexString(System.currentTimeMillis());
-                log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
+                log.error("Uncaught internal fault. Ticket error returned to caller [ticketError={}]", ticketError, e);
                 return new ResponseEntity<String>("TicketError=" + ticketError, HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
