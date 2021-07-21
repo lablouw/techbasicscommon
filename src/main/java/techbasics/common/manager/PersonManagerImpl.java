@@ -12,7 +12,6 @@ import java.util.Date;
 
 public class PersonManagerImpl implements PersonManager {
 
-	@Override
 	public ProcessedPerson processPerson(Person p) {
 		ProcessedPerson pp = new ProcessedPerson();
 		pp.setName(p.getName());

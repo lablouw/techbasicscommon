@@ -5,12 +5,16 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 @Aspect
 @Slf4j
 public class UncaughtRestExceptionHandlerAspect {
+
+    @Value("${uncaught.rest.exception.ticket.generation:false}")
+    private boolean generateTicketErrors;
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
     public void restController() {//No implementation required
@@ -41,13 +45,17 @@ public class UncaughtRestExceptionHandlerAspect {
     }
 
     @Around("restController() && (getMapping() || putMapping() || postMapping() || deleteMapping() || patchMapping() || requestMapping())")
-    public Object processUncaughtRestException(ProceedingJoinPoint pjp) {
+    public Object processUncaughtRestException(ProceedingJoinPoint pjp) throws Throwable {
         try {
             return pjp.proceed();
         } catch (Throwable e) {
-            String ticketError = Long.toHexString(System.currentTimeMillis());
-            log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
-            return new ResponseEntity<String>("TicketError=" + ticketError, HttpStatus.INTERNAL_SERVER_ERROR);
+            if (generateTicketErrors) {
+                String ticketError = Long.toHexString(System.currentTimeMillis());
+                log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
+                return new ResponseEntity<String>("TicketError=" + ticketError, HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            throw e;
         }
     }
 
