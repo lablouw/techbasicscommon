@@ -5,7 +5,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import techbasics.common.Exception.InternalServerError;
+import techbasics.common.Exception.InternalServerTicketError;
 
 @Aspect
 @Slf4j
@@ -30,7 +30,7 @@ public class UncaughtSoapExceptionHandlerAspect {
         } catch (Throwable e) {
             String ticketError = Long.toHexString(System.currentTimeMillis());
             log.error("Internal Server Error. Ticket error code returned to caller [ticketError={}]", ticketError, e);
-            throw new InternalServerError(ticketError);
+            throw new InternalServerTicketError(ticketError);
         }
     }
 

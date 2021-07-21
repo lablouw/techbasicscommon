@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class InternalServerError extends Throwable {
+public class InternalServerTicketError extends Throwable {
 
     private String errorTicket;
 

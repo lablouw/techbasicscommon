@@ -13,19 +13,35 @@ import org.springframework.http.ResponseEntity;
 public class UncaughtRestExceptionHandlerAspect {
 
     @Pointcut("@within(org.springframework.web.bind.annotation.RestController)")
-    private void restController() {
+    public void restController() {//No implementation required
     }
 
-    @Pointcut("@within( techbasics.common.annotaiton.UncaughtExceptionHandler)")
-    private void uncaughtExceptionHandler() {
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.GetMapping)")
+    public void getMapping() {//No implementation required
     }
 
-    @Pointcut("execution(public * *(..))")
-    private void allPublicMethods() {
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PutMapping)")
+    public void putMapping() {//No implementation required
     }
 
-    @Around("uncaughtExceptionHandler() && restController() && allPublicMethods()")
-    public Object processUncaughtRestException(ProceedingJoinPoint pjp) throws Throwable {
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PostMapping)")
+    public void postMapping() {//No implementation required
+    }
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
+    public void deleteMapping() {//No implementation required
+    }
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.PatchMapping)")
+    public void patchMapping() {//No implementation required
+    }
+
+    @Pointcut("@annotation(org.springframework.web.bind.annotation.RequestMapping)")
+    public void requestMapping() {//No implementation required
+    }
+
+    @Around("restController() && (getMapping() || putMapping() || postMapping() || deleteMapping() || patchMapping() || requestMapping())")
+    public Object processUncaughtRestException(ProceedingJoinPoint pjp) {
         try {
             return pjp.proceed();
         } catch (Throwable e) {
